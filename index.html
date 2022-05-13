@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+    <title>test</title>
+    <style>
+        html{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            width: 100%;
+            height: 100%;
+            margin: 0%;
+        }
+        #tester{
+            width: 100%;
+            height: 100%;
+            margin: 0%;
+            display: block;
+            font-family: cursive;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="tester"></div>
+    <script>
+var trace1 = {
+  //x: [arrayX[1],arrayX[2],arrayX[3],arrayX[4],arrayX[5]],
+//  y: [1000, 5000, 4000, 7000, 5000],
+  x: [],
+  y:[],
+  mode: 'lines+markers',
+  name: 'Добыто (сутки)',
+  type: 'scatter',
+  line: {color: "red", width: 3, shape: 'linear'},
+ // connectgaps: true
+};
+
+var trace2 = {
+  //  y: [1000, 2000, 3000,5000,3000],
+  //  x: arrayX,
+  x: [],
+  y:[],
+    type: 'bar',
+    name: 'Добыто (час)',
+    marker: {
+        color: '8eed84',
+    }
+};
+var trace3 = {
+  //  x: [arrayX[5],'2013-10-04 23:55:00'],
+ // y: [5000,10000],
+ x: ['2013-10-04', '2013-10-04 23:59:00'],
+  y:[0,0],
+  mode: 'lines',
+  name: 'Прогноз добычи',
+  line: {color: "black", width: 3,  dash: 'dot'},
+  //connectgaps: true
+}
+var config = {
+    displayModeBar: false,
+    responsive: true,
+    showlegend: true
+}
+
+var data = [trace1,trace3,trace2];
+        layout = {
+            title: 'Скважина 1-1',
+            font:{size:20, family: "cursive"},
+            xaxis: {
+               range: ['2013-10-04', '2013-10-05'],
+               type: 'date',
+               showgrid: false,
+                zeroline: true
+            },
+            yaxis: {
+                title: 'Добыто',
+                showline: false
+            },
+            legend: {
+            orientation : "h",
+            y: -0.1,
+            x: 0.4,
+            traceorder: 'reversed',
+            font: {
+                size: 16,
+                family: "monospace"
+            }
+        }
+    }
+        graphDiv = document.getElementById('tester');
+
+      Plotly.newPlot( graphDiv, [trace1,trace2,trace3],layout,config);
+     //   var update = {
+  //  opacity: 0.4,
+   // 'marker.color': 'red'
+//};
+//Plotly.restyle(graphDiv, update, 0);
+
+
+
+function setPlane(value){
+    var trace = {
+  x: ['2013-10-04','2013-10-05'],
+  y: [value,value],
+  mode:'lines',
+  name: "План добычи",
+  fill: 'tonexty',
+  line: {
+     width: 2,
+  },
+  marker: {
+        color: 'dceefe',
+    }
+};
+data.unshift(trace)
+console.log(data)
+Plotly.newPlot( graphDiv, data, layout,config);
+}
+
+
+
+function setValue(value, times){
+
+    for (i=0;i<trace1.x.length;i++){
+        if (trace1.x[i]>times){
+        console.log("найдено" + trace1.x[i])
+          break;
+      }
+    }
+    
+    trace1.x.splice(i, 0 , times);
+    trace1.y.splice(i, 0 , value)
+    data[0] =  trace1
+    trace3.x[0] = trace1.x[trace1.x.length-1]
+    trace3.y[0] = trace1.y[trace1.y.length-1]
+   // trace3.x[1] = '2013-10-04 23:59:00'
+    //trace3.y[1] = 17000
+    let da =new  Date(trace1.x[trace1.x.length-1])
+   // let dad = new Date(trace3.x[1])
+   trace3.y[1] = trace1.y[trace1.y.length-1] + (trace1.y[trace1.y.length-1]/da.getHours())*(24 - da.getHours())
+
+    Plotly.newPlot( graphDiv, data,layout,config);
+}
+
+
+
+//setPlane(10000)
+setValue(3000, "2013-10-04 04:34:00");
+setValue(4000, "2013-10-04 04:55:00");
+setValue(5000, "2013-10-04 05:13:00");
+setValue(6000, "2013-10-04 07:40:00");
+setValue(6000, "2013-10-04 18:40:00");
+setValue(1500, "2013-10-04 02:34:00");
+setValue(5500, "2013-10-04 05:30:00");
+setPlane(14000)
+    </script>
+</body>
+</html>
