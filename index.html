@@ -74,10 +74,9 @@ var trace2 = {
     name: 'Добыто (час)',
     marker: {
         color: '8eed84',
-        width: 10
     },
     hovertemplate :'%{x}  <br>' + 'Добыто (час): %{y}' +"<extra></extra>",
-  hoverlabel : {
+     hoverlabel : {
       bgcolor: 'white',
       bordercolor: 'green'
   }
@@ -89,7 +88,7 @@ var trace3 = {
   y:[0,0],
   mode: 'lines',
   name: 'Прогноз добычи',
-  line: {color: "black", width: 3,  dash: 'dot'},
+  line: {color: "ffa426", width: 3,  dash: 'dot'},
 
 }
 var config = {
@@ -105,6 +104,7 @@ var data = [trace,trace3,trace1,trace2];
             title: 'Скважина 1-1',
             font:{size:16, family: "cursive"},
             xaxis: {
+                tickformat: '%H:%M \n %a %B %d %Y',
                range: [new Date('2013-10-04 00:00:00'), new Date('2013-10-05 00:00:00')],
                 type: 'date',
                 tickmode: "linear", 
